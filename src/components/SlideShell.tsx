@@ -26,6 +26,12 @@ interface SlideShellProps {
 /**
  * Carcasa común de cada slide: orbes decorativos, cabecera animada
  * (eyebrow + título + subtítulo) y el cuerpo con stagger.
+ *
+ * Las luces de color (orbs) se posicionan automáticamente DETRÁS del
+ * contenido: la primera detrás del título (header) y la segunda detrás
+ * de la zona de cards (body). Sólo se respeta el `color` que define cada
+ * slide; la posición/tamaño/opacidad se calculan acá para mantener un
+ * resplandor sutil y consistente en toda la presentación.
  */
 export function SlideShell({
   eyebrow,
@@ -36,24 +42,16 @@ export function SlideShell({
   orbs = [],
   compact = false,
 }: SlideShellProps) {
+  // Tomamos sólo los colores definidos por el slide; las posiciones son fijas.
+  const headerColor = orbs[0]?.color ?? 'var(--blue)'
+  const bodyColor = orbs[1]?.color ?? 'var(--violet)'
+
   return (
     <div className="slide slide--content">
-      {orbs.map((o, i) => (
-        <div
-          key={i}
-          className="orb"
-          style={{
-            background: o.color,
-            width: o.size,
-            height: o.size,
-            top: o.top,
-            left: o.left,
-            right: o.right,
-            bottom: o.bottom,
-            ...(o.opacity !== undefined ? { opacity: o.opacity } : {}),
-          }}
-        />
-      ))}
+      {/* Luz detrás del título */}
+      <div className="orb orb--header" style={{ background: headerColor }} />
+      {/* Luz detrás de la zona de cards */}
+      <div className="orb orb--body" style={{ background: bodyColor }} />
 
       <motion.div
         className="slide-header"

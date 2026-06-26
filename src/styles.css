@@ -20,11 +20,11 @@
   --green: #34d399;
   --amber: #fbbf24;
 
-  /* Texto */
-  --text-0: #f8fafc;
-  --text-1: #cbd5e1;
-  --text-2: #94a3b8;
-  --text-3: #64748b;
+  /* Texto — escala muy clara para máximo contraste sobre fondo oscuro */
+  --text-0: #ffffff;
+  --text-1: #f1f5f9;
+  --text-2: #e2e8f0;
+  --text-3: #cbd5e1;
 
   /* Superficies glass */
   --glass: rgba(255, 255, 255, 0.04);
@@ -569,6 +569,36 @@ body {
   opacity: 0.5;
   pointer-events: none;
   z-index: 0;
+}
+
+/* Luces de color que actúan como resplandor MUY SUTIL detrás del contenido.
+   En vez de flotar en las esquinas, se centran detrás del título y de la
+   zona de cards. translate(-50%,-50%) las ancla por su centro al punto
+   indicado, para que el halo quede repartido alrededor del elemento.
+   Blur amplio + opacidad baja => sólo dan profundidad, nunca compiten
+   con el texto ni las cards. */
+.orb--header,
+.orb--body {
+  transform: translate(-50%, -50%);
+  filter: blur(130px);
+}
+
+/* Detrás del título (parte superior-izquierda del bloque de contenido) */
+.orb--header {
+  width: clamp(320px, 36vw, 560px);
+  height: clamp(320px, 36vw, 560px);
+  top: 28%;
+  left: 36%;
+  opacity: 0.12;
+}
+
+/* Detrás de la zona de cards (centro del slide) */
+.orb--body {
+  width: clamp(380px, 48vw, 720px);
+  height: clamp(380px, 48vw, 720px);
+  top: 60%;
+  left: 50%;
+  opacity: 0.1;
 }
 
 /* ============================================================

@@ -15,9 +15,9 @@ const team = [
 export function Slide01Portada() {
   return (
     <div className="slide slide--portada">
-      <div className="orb" style={{ background: 'var(--blue)', width: 460, height: 460, top: -120, left: -100 }} />
-      <div className="orb" style={{ background: 'var(--violet)', width: 420, height: 420, bottom: -140, right: -80 }} />
-      <div className="orb" style={{ background: 'var(--cyan)', width: 220, height: 220, top: '40%', right: '20%', opacity: 0.3 }} />
+      {/* Luces sutiles detrás del bloque de contenido (a la izquierda) */}
+      <div className="orb orb--header" style={{ background: 'var(--blue)', left: '28%', top: '34%' }} />
+      <div className="orb orb--body" style={{ background: 'var(--violet)', left: '30%', top: '62%' }} />
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="col" style={{ gap: 16, zIndex: 2, margin: 'auto 0', width: '100%', maxWidth: 1280 }}>
         <motion.div variants={fadeUp}>

@@ -42,8 +42,9 @@ function CanvasBlock({ area, icon: Icon, title, color, items, n }: BlockProps) {
 export function Slide11CanvasMapa() {
   return (
     <div className="slide" style={{ padding: 'clamp(16px, 2.5vw, 36px)' }}>
-      <div className="orb" style={{ background: 'var(--blue)', width: 340, height: 340, top: -120, left: -100 }} />
-      <div className="orb" style={{ background: 'var(--violet)', width: 320, height: 320, bottom: -140, right: -80 }} />
+      {/* Luces sutiles detrás de la grilla del Canvas */}
+      <div className="orb orb--header" style={{ background: 'var(--blue)', left: '32%', top: '32%' }} />
+      <div className="orb orb--body" style={{ background: 'var(--violet)', left: '60%', top: '62%' }} />
 
       <motion.div className="slide-header" variants={stagger} initial="hidden" animate="show" style={{ marginBottom: 10 }}>
         <motion.div variants={fadeUp} className="row items-center gap-md wrap">

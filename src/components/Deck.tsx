@@ -75,12 +75,6 @@ export function Deck() {
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       />
 
-      {/* Marca */}
-      <div className="brand-tag">
-        <span className="brand-mark" />
-        StockIA
-      </div>
-
       <div className="slide-stage" onClick={handleStageClick}>
         <AnimatePresence custom={dir} mode="wait">
           <motion.div

@@ -153,29 +153,26 @@ body {
    Tipografía y elementos comunes
    ============================================================ */
 
+/* Eyebrow minimalista: sin píldora ni fondo, solo texto mono con un
+   punto de acento discreto */
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.18em;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--blue-bright);
-  padding: 6px 14px;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  background: var(--glass);
-  backdrop-filter: blur(8px);
+  color: var(--text-2);
   width: fit-content;
 }
 
 .eyebrow .dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
+  flex: none;
   background: var(--cyan);
-  box-shadow: 0 0 10px var(--cyan);
 }
 
 .slide-title {
@@ -562,30 +559,6 @@ body {
   box-shadow: 0 0 12px rgba(96, 165, 250, 0.6);
 }
 
-/* Marca / pie */
-.brand-tag {
-  position: absolute;
-  top: 26px;
-  right: 32px;
-  z-index: 20;
-  font-family: var(--font-head);
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-  color: var(--text-2);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.brand-tag .brand-mark {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--grad-accent);
-  box-shadow: 0 0 12px rgba(96, 165, 250, 0.7);
-}
-
 /* ============================================================
    Decoraciones / orbes
    ============================================================ */
@@ -802,7 +775,6 @@ body {
   /* En pantallas medianas ocultamos la ayuda de teclado, pero conservamos
      la sección a la izquierda para que el pie siga equilibrado */
   .kbd-hint { display: none; }
-  .brand-tag { font-size: 0.85rem; top: 18px; right: 20px; }
 }
 
 /* Móviles y pantallas angostas: todo a una sola columna */
@@ -817,7 +789,6 @@ body {
   .footer-section { display: none; }
   .nav { gap: 8px; padding: 6px 8px; }
   .nav-dots { display: none; } /* en móvil bastan flechas + contador */
-  .brand-tag { display: none; }
 }
 
 /* Respetar usuarios que prefieren menos movimiento */

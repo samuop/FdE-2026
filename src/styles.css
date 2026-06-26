@@ -127,6 +127,19 @@ body {
   margin-right: auto;
 }
 
+/* El encabezado nunca se encoge */
+.slide-header { flex: none; }
+
+/* Slides de contenido (SlideShell): centran encabezado + cuerpo como un
+   grupo, repartiendo el espacio sobrante arriba y abajo por igual.
+   Así no queda el "agujero" concentrado abajo. */
+.slide--content {
+  justify-content: center;
+}
+
+/* El Canvas (slide 11) sí debe llenar todo el alto disponible */
+.slide-body.cv-canvas { flex: 1; }
+
 /* La portada usa todo el alto de la pantalla y centra su contenido,
    sin reservar el hueco de la nav (que es transparente y flota encima) */
 .slide--portada {
@@ -378,13 +391,12 @@ body {
 .slide-header { margin-bottom: 22px; }
 
 .slide-body {
-  flex: 1;
+  /* Se dimensiona a su contenido (puede encogerse si no entra), para que
+     el grupo encabezado+cuerpo se centre como un todo dentro del slide */
+  flex: 0 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  /* Centramos verticalmente el contenido: márgenes equilibrados
-     arriba y abajo en todas las slides (no más huecos raros) */
-  justify-content: center;
   /* Si el contenido no entra en pantallas muy bajas, permitimos scroll
      suave en lugar de que se desborde sobre la navegación */
   overflow-y: auto;
@@ -396,28 +408,86 @@ body {
    Navegación
    ============================================================ */
 
-.nav {
+/* Pie de página: barra inferior con tres zonas equilibradas.
+   Ocupa el espacio reservado por --nav-space y se apoya en los bordes
+   del slide para que no queden huecos vacíos a izquierda/derecha. */
+.footer {
   position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-space);
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 clamp(20px, 4vw, 48px);
+  pointer-events: none;
+  /* Velo suave para despegar el pie del contenido sin tapar el fondo */
+  background: linear-gradient(180deg, transparent, rgba(6, 7, 15, 0.55) 60%);
+}
+
+/* Los controles dentro del pie sí reciben eventos */
+.footer > * { pointer-events: auto; }
+
+/* Zona izquierda: indicador de sección (rellena el hueco antes vacío) */
+.footer-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  opacity: 0.85;
+  transition: opacity 0.25s ease;
+}
+.footer-section:hover { opacity: 1; }
+
+.footer-section__num {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--blue-bright);
+  letter-spacing: 0.04em;
+}
+
+.footer-section__sep {
+  width: 18px;
+  height: 1px;
+  flex: none;
+  background: linear-gradient(90deg, var(--blue-bright), transparent);
+  opacity: 0.7;
+}
+
+.footer-section__label {
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav {
+  justify-self: center;
   display: flex;
   align-items: center;
   gap: 16px;
-  z-index: 20;
-  background: rgba(10, 12, 26, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(10, 12, 26, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   padding: 7px 11px;
-  backdrop-filter: blur(10px);
-  opacity: 0.55;
-  transition: opacity 0.25s ease, background 0.25s ease;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  opacity: 0.7;
+  transition: opacity 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* Al pasar el mouse, la nav se vuelve totalmente visible */
 .nav:hover {
   opacity: 1;
-  background: rgba(10, 12, 26, 0.5);
+  background: rgba(10, 12, 26, 0.6);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.45);
 }
 
 .nav-btn {
@@ -669,25 +739,30 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
-/* Hint de teclado */
+/* Hint de teclado (zona derecha del pie) */
 .kbd-hint {
-  position: absolute;
-  bottom: 30px;
-  right: 32px;
-  z-index: 20;
+  justify-self: end;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--text-3);
   display: flex;
   gap: 6px;
   align-items: center;
+  opacity: 0.75;
+  transition: opacity 0.25s ease;
 }
+.kbd-hint:hover { opacity: 1; }
 .kbd {
   border: 1px solid var(--border-strong);
-  border-radius: 5px;
-  padding: 2px 7px;
+  border-radius: 6px;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 7px;
+  display: inline-grid;
+  place-items: center;
   background: var(--glass);
-  color: var(--text-2);
+  color: var(--text-1);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 /* ============================================================
@@ -724,6 +799,8 @@ body {
 @media (max-width: 1024px) {
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  /* En pantallas medianas ocultamos la ayuda de teclado, pero conservamos
+     la sección a la izquierda para que el pie siga equilibrado */
   .kbd-hint { display: none; }
   .brand-tag { font-size: 0.85rem; top: 18px; right: 20px; }
 }
@@ -735,7 +812,10 @@ body {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .slide-title { font-size: clamp(1.5rem, 7vw, 2rem); }
   .slide-subtitle, .lead { font-size: 0.92rem; }
-  .nav { gap: 8px; padding: 6px 8px; bottom: 16px; }
+  /* El pie pasa a una sola zona centrada (solo navegación) */
+  .footer { grid-template-columns: 1fr; padding: 0 12px; }
+  .footer-section { display: none; }
+  .nav { gap: 8px; padding: 6px 8px; }
   .nav-dots { display: none; } /* en móvil bastan flechas + contador */
   .brand-tag { display: none; }
 }

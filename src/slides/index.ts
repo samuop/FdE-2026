@@ -14,20 +14,22 @@ import { Slide12Conclusiones } from './Slide12Conclusiones'
 
 export interface SlideDef {
   id: string
+  /** Etiqueta corta de sección que se muestra en el pie de página */
+  label: string
   component: ComponentType
 }
 
 export const slides: SlideDef[] = [
-  { id: 'portada', component: Slide01Portada },
-  { id: 'idea', component: Slide02Idea },
-  { id: 'segmento', component: Slide03Segmento },
-  { id: 'empatia', component: Slide04Empatia },
-  { id: 'early-adopters', component: Slide05EarlyAdopters },
-  { id: 'propuesta-valor', component: Slide06PropuestaValor },
-  { id: 'competencia', component: Slide07Competencia },
-  { id: 'canvas-intro', component: Slide08Canvas },
-  { id: 'ciclo-cma', component: Slide09CicloCMA },
-  { id: 'presentacion-final', component: Slide10PresentacionFinal },
-  { id: 'canvas-mapa', component: Slide11CanvasMapa },
-  { id: 'conclusiones', component: Slide12Conclusiones },
+  { id: 'portada', label: 'Portada', component: Slide01Portada },
+  { id: 'idea', label: 'La idea', component: Slide02Idea },
+  { id: 'segmento', label: 'Segmento', component: Slide03Segmento },
+  { id: 'empatia', label: 'Mapa de empatía', component: Slide04Empatia },
+  { id: 'early-adopters', label: 'Early Adopters', component: Slide05EarlyAdopters },
+  { id: 'propuesta-valor', label: 'Propuesta de valor', component: Slide06PropuestaValor },
+  { id: 'competencia', label: 'Competencia', component: Slide07Competencia },
+  { id: 'canvas-intro', label: 'Business Model Canvas', component: Slide08Canvas },
+  { id: 'ciclo-cma', label: 'Ciclo C-M-A', component: Slide09CicloCMA },
+  { id: 'presentacion-final', label: 'Presentación final', component: Slide10PresentacionFinal },
+  { id: 'canvas-mapa', label: 'Canvas + Mapa', component: Slide11CanvasMapa },
+  { id: 'conclusiones', label: 'Conclusiones', component: Slide12Conclusiones },
 ]

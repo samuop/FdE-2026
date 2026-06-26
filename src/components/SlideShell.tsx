@@ -37,7 +37,7 @@ export function SlideShell({
   compact = false,
 }: SlideShellProps) {
   return (
-    <div className="slide">
+    <div className="slide slide--content">
       {orbs.map((o, i) => (
         <div
           key={i}

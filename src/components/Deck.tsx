@@ -3,8 +3,16 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { slideVariants } from './motion'
 import { slides } from '../slides'
 
+/** Lee el índice inicial desde el hash de la URL (#5 → slide 5), 0 por defecto. */
+function initialIndex(): number {
+  if (typeof window === 'undefined') return 0
+  const n = parseInt(window.location.hash.replace('#', ''), 10)
+  if (Number.isNaN(n)) return 0
+  return Math.min(Math.max(n - 1, 0), slides.length - 1)
+}
+
 export function Deck() {
-  const [[index, dir], setState] = useState<[number, number]>([0, 0])
+  const [[index, dir], setState] = useState<[number, number]>([initialIndex(), 0])
   const total = slides.length
 
   const go = useCallback(
@@ -17,6 +25,14 @@ export function Deck() {
 
   const nextSlide = useCallback(() => go(index + 1, 1), [go, index])
   const prevSlide = useCallback(() => go(index - 1, -1), [go, index])
+
+  // Mantener el hash de la URL sincronizado para poder compartir/recargar un slide
+  useEffect(() => {
+    const hash = `#${index + 1}`
+    if (window.location.hash !== hash) {
+      window.history.replaceState(null, '', hash)
+    }
+  }, [index])
 
   // Navegación por teclado
   useEffect(() => {
@@ -88,46 +104,60 @@ export function Deck() {
         </AnimatePresence>
       </div>
 
-      {/* Navegación */}
-      <div className="nav">
-        <button
-          className="nav-btn"
-          onClick={prevSlide}
-          disabled={index === 0}
-          aria-label="Anterior"
-        >
-          ‹
-        </button>
-
-        <div className="nav-dots">
-          {slides.map((s, i) => (
-            <button
-              key={s.id}
-              className={`nav-dot ${i === index ? 'active' : ''}`}
-              onClick={() => go(i, i > index ? 1 : -1)}
-              aria-label={`Ir a slide ${i + 1}`}
-            />
-          ))}
+      {/* Pie de página: tres zonas equilibradas (sección · nav · ayuda) */}
+      <div className="footer">
+        {/* Zona izquierda: sección actual + título corto */}
+        <div className="footer-section no-advance">
+          <span className="footer-section__num">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <span className="footer-section__sep" />
+          <span className="footer-section__label">{slides[index].label}</span>
         </div>
 
-        <span className="nav-counter">
-          <b>{String(index + 1).padStart(2, '0')}</b> / {String(total).padStart(2, '0')}
-        </span>
+        {/* Zona central: navegación */}
+        <div className="nav">
+          <button
+            className="nav-btn"
+            onClick={prevSlide}
+            disabled={index === 0}
+            aria-label="Anterior"
+          >
+            ‹
+          </button>
 
-        <button
-          className="nav-btn"
-          onClick={nextSlide}
-          disabled={index === total - 1}
-          aria-label="Siguiente"
-        >
-          ›
-        </button>
-      </div>
+          <div className="nav-dots">
+            {slides.map((s, i) => (
+              <button
+                key={s.id}
+                className={`nav-dot ${i === index ? 'active' : ''}`}
+                onClick={() => go(i, i > index ? 1 : -1)}
+                aria-label={`Ir a ${s.label}`}
+                title={s.label}
+              />
+            ))}
+          </div>
 
-      <div className="kbd-hint">
-        <span className="kbd">←</span>
-        <span className="kbd">→</span>
-        para navegar
+          <span className="nav-counter">
+            <b>{String(index + 1).padStart(2, '0')}</b> / {String(total).padStart(2, '0')}
+          </span>
+
+          <button
+            className="nav-btn"
+            onClick={nextSlide}
+            disabled={index === total - 1}
+            aria-label="Siguiente"
+          >
+            ›
+          </button>
+        </div>
+
+        {/* Zona derecha: ayuda de teclado */}
+        <div className="kbd-hint no-advance">
+          <span className="kbd">←</span>
+          <span className="kbd">→</span>
+          <span className="kbd-hint__text">para navegar</span>
+        </div>
       </div>
     </div>
   )
